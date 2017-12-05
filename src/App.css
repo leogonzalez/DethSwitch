@@ -66,3 +66,17 @@ code {
   height: 16px;
   margin-right: 10px;
 }
+
+.TokenMarket, .NewContract {
+  background: lightblue;
+  border-radius: 2%;
+  margin:10px;
+}
+/*
+.submission-forms {
+  display:flex;
+}*/
+
+.list-item {
+  margin-bottom: 5px;
+}

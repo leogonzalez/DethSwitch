@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import getWeb3 from './utils/getWeb3'
 import AnyERC20Token from '../build/contracts/AnyERC20Token.json';
+import HolderList from './HolderList.js';
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -63,6 +64,11 @@ class TokenMarket extends Component {
       }).then((result) => {
         // Renders Token Symbol
         this.setState({tokenSymbol: result});
+        return anyERC20TokenInstance.balanceOf.call(accounts[0])
+      }).then((result) => {
+        var arrHolders = this.state.tokenHolders;
+        arrHolders.push([accounts[0], result.c[0]]);
+        this.setState({tokenHolders: arrHolders});
       })
     })
   }
@@ -71,12 +77,13 @@ class TokenMarket extends Component {
     return (
       <div className="TokenMarket">
         <div className="container">
-        
+
               <h1> Token Market </h1>
               <p>Token Name: {this.state.tokenName}</p>
               <p>Token Symbol: {this.state.tokenSymbol}</p>
               <p>Total Supply: {this.state.tokenSupply}</p>
-              <p>Holder Accounts: {this.state.tokenHolders}</p>
+              <p>Holder Accounts:</p>
+              <HolderList holderList={this.state.tokenHolders}/>
         </div>
       </div>
     );

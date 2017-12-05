@@ -41,8 +41,9 @@ class App extends Component {
         <div className="App">
               <TokenMarket />
               <NewContract />
-              <Withdraw />
               <DeployedContracts />
+              <Withdraw />
+
         </div>
       </div>
     );

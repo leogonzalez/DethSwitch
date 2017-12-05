@@ -12,9 +12,9 @@ class App extends Component {
 
     this.state = {
       web3: null,
-      parentAddress: null,
-      heirAddress: null,
-      heartBeatTimer: null,
+      parentAddress: undefined,
+      heirAddress: undefined,
+      heartBeatTimer: undefined,
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -83,12 +83,14 @@ class App extends Component {
     return (
       <div className="App">
             <p>Parent Address (detected): {this.state.parentAddress}</p>
+            <p>Heir Address: {this.state.heirAddress}</p>
+            <p>Drop Dead Date: {this.state.heartBeatTimer}</p>
             <form onSubmit={this.handleSubmit}>
                 <input name="heirAddress" placeholder="heir address" type="text" value={this.state.heirAddress} onChange={this.handleChange} />
                 <input type="submit" value="Submit" />
                 <input name="heartBeatTimer" placeholder="days till expiration" type="text" value={this.state.heartBeatTimer} onChange={this.handleChange} />
                 <input type="submit" value="Submit" />
-            </form>                    
+            </form>
       </div>
     );
   }

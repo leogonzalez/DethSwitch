@@ -67,7 +67,7 @@ code {
   margin-right: 10px;
 }
 
-.TokenMarket, .NewContract {
+.TokenMarket, .NewContract, .DeployedContracts, .Withdraw {
   background: lightblue;
   border-radius: 2%;
   margin:10px;

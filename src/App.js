@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import getWeb3 from './utils/getWeb3'
 import TokenMarket from './TokenMarket.js';
 import NewContract from './NewContract.js';
+import Withdraw from './Withdraw.js';
+import DeployedContracts from './DeployedContracts.js';
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -39,6 +41,8 @@ class App extends Component {
         <div className="App">
               <TokenMarket />
               <NewContract />
+              <Withdraw />
+              <DeployedContracts />
         </div>
       </div>
     );

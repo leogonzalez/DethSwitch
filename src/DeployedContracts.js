@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
 import getWeb3 from './utils/getWeb3'
-import TokenMarket from './TokenMarket.js';
-import NewContract from './NewContract.js';
-import Withdraw from './Withdraw.js';
-import DeployedContracts from './DeployedContracts.js';
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-class App extends Component {
+class DeployedContracts extends Component {
   constructor(props) {
     super(props)
 
@@ -37,17 +33,13 @@ class App extends Component {
 
   render() {
     return (
-      <div className='container'>
-        <div className="App">
-              <TokenMarket />
-              <NewContract />
-              <DeployedContracts />
-              <Withdraw />
-
+      <div className="DeployedContracts">
+        <div className='container'>
+          <h1> All the DethSwitch Contracts Deployed so far</h1>
         </div>
       </div>
     );
   }
 }
 
-export default App
+export default DeployedContracts

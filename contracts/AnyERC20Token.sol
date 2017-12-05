@@ -35,7 +35,7 @@ contract Token {
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
-
+    
 }
 
 
@@ -118,7 +118,7 @@ contract AnyERC20Token is StandardToken {
         ) {
         balances[msg.sender] = 42;               // Give the creator all initial tokens (100000 for example)
         totalSupply = 42;                        // Update total supply (100000 for example)
-        name = "Any ERC20 Token";                                   // Set the name for display purposes
+        name = "Any ERC20 Token";                                   // Set the name for display purposes 
         decimals = 18;                            // Amount of decimals for display purposes
         symbol = "NEET";                               // Set the symbol for display purposes
     }

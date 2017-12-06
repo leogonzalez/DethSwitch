@@ -1,3 +1,5 @@
+/*eslint-disable no-useless-constructor*/
+
 import React, { Component } from 'react'
 import Holder from './Holder.js'
 
@@ -16,7 +18,7 @@ class HolderList extends Component {
       <div className="HolderList">
       {
         this.props.holderList.map((c) => {
-          return   (<Holder key={c[0]} 
+          return   (<Holder key={c[0]}
                         account={c[0]}
                         tokens={c[1]}
                  />);

@@ -25,12 +25,12 @@ class App extends Component {
     .then(results => {
       this.setState({
         web3: results.web3,
-        parentAddress: results.web3.eth.accounts[0]
+        parentAddress: results.web3.eth.accounts[0],
       })
 
     })
-    .catch(() => {
-      console.log('Error finding web3.')
+    .catch((e) => {
+      console.log(e)
     })
   }
 

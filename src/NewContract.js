@@ -1,6 +1,6 @@
+/* eslint-disable no-useless-constructor */
+
 import React, { Component } from 'react'
-import getWeb3 from './utils/getWeb3'
-import DSF from '../build/contracts/DethSwitchFactory.json'
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -26,95 +26,57 @@ class NewContract extends Component {
     super(props)
 
     this.state = {
-      web3: null,
-      parentAddress: undefined,
       heirAddress: undefined,
       heartBeatTimer: undefined,
-      dsfinstance: undefined
     }
+
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  instantiateDSFContract() {
-    const contract = require('truffle-contract')
-    const dethSwitchFactory = contract(DSF)
-    dethSwitchFactory.setProvider(this.state.web3.currentProvider)
-
-  //   // Declaring this for later so we can chain functions on SimpleStorage.
-    var dethSwitchFactoryInstance
-
-    // Get accounts.
-    this.state.web3.eth.getAccounts((error, accounts) => {
-      dethSwitchFactory.deployed().then((instance) => {
-        dethSwitchFactoryInstance = instance
-        //calls the totalSupply function from StandardToken contract
-        this.setState({dsfinstance:dethSwitchFactoryInstance})
-        // enable listening to events on this contract
-
-      })
-    })
-  }
-
-  componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
-
-    getWeb3
-    .then(results => {
-      this.setState({
-        web3: results.web3,
-        parentAddress: results.web3.eth.accounts[0]
-      })
-
-      // Instantiate contract once web3 provided.
-      this.instantiateDSFContract()
-    })
-    .catch(() => {
-      console.log('Error finding web3.')
-    })
-  }
-
   createNewDethSwitch(){
-    return this.state.dsfinstance.newDethSwitch(this.state.heirAddress,'leo', {from: this.state.parentAddress});
-  }
-
-  logNumberContractsByParent(){
-    return this.state.dsfinstance.getNumberOfOwnedContracts(this.state.parentAddress).then((res) => {
-      console.log(`Parent has created ${res.c[0]} DS contracts`);
-    })
-  }
-
-  logNumberContractsByHeir(){
-    // DEPLOYED CONTRACTS BY HEIR maybe should be asking for the heirs address
-    return this.state.dsfinstance.getNumberOfHeirContracts(this.state.heirAddress).then((res) => {
-      console.log(`Heir has received ${res.c[0]} DS contracts`);
-    })
-  }
-
-  logContractsByHeir(){
-    //THIS IS NOT WORKING
-    return this.state.dsfinstance.deployedContractsByHeir.call().then((res) => {
-      console.log(JSON.stringify(res));
-    })
-    // console.log(this.state.dsfinstance);
-  }
-
-  logOwnedContracts(){
-    //THIS IS NOT WORKING
-    return this.state.dsfinstance.getOwnedContracts.call().then((res) => {
+    return this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress}).then((res) => {
       console.log(res);
+    });
+  }
+
+  logNumberContractsAsParent(){
+    return this.props.dsfinstance.getNumberOfOwnedContracts.call().then((res) => {
+        console.log(`This account ${this.props.parentAddress} has created ${res.c[0]} DethSwitch contracts`)
+    });
+
+  }
+
+  logNumberContractsAsHeir(){
+    return this.props.dsfinstance.getNumberOfHeirContracts.call().then((res) => {
+      console.log(`This account ${this.props.parentAddress} is an heir to ${res.c[0]} DethSwitch contracts`);
     })
-    // console.log(this.state.dsfinstance);
+  }
+
+  async logContractsByHeir(){
+    let heirContracts = await this.props.dsfinstance.getNumberOfHeirContracts.call();
+    for (var i = 0; i < heirContracts; i++) {
+      var ctc = await this.props.dsfinstance.getHeirContracts.call(i);
+      console.log(ctc);
+    }
+  }
+
+  async logOwnedContracts(){
+    let numberOfContracts = await this.props.dsfinstance.getNumberOfOwnedContracts.call();
+    for (var i = 0; i < numberOfContracts; i++) {
+      var ctc = await this.props.dsfinstance.getOwnedContracts.call(i);
+      console.log(ctc);
+    }
+
   }
 
   handleSubmit(e) {
     e.preventDefault();
     this.createNewDethSwitch();
-    this.logNumberContractsByParent();
-    this.logNumberContractsByHeir();
-    // this.logOwnedContracts(); not working
-    // the getters for public mappings deployedContractsByHeir and deployedContractsByParent are not working
+    // this.logNumberContractsAsParent();
+    // this.logNumberContractsAsHeir();
+    // this.logOwnedContracts();
+    // this.logContractsByHeir();
   }
 
   handleChange(e) {

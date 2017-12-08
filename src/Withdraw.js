@@ -44,8 +44,6 @@ class Withdraw extends Component {
     const contract = require('truffle-contract')
     const anyERC20Token = contract(AnyERC20Token)
     anyERC20Token.setProvider(this.state.web3.currentProvider)
-
-  //   // Declaring this for later so we can chain functions on SimpleStorage.
     var anyERC20TokenInstance
 
     // Get accounts.
@@ -55,9 +53,6 @@ class Withdraw extends Component {
         //calls the totalSupply function from StandardToken contract
         this.setState({erc20instance:anyERC20TokenInstance})
         this.setState({fromAddress:accounts[0]})
-
-        // enable listening to events on this contract
-
       })
     })
 

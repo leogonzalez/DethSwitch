@@ -160,6 +160,7 @@ class App extends Component {
               />
 
               <WithdrawFunds
+                web3={this.state.web3}
                 tokenAddress={this.state.tokenAddress}
                 dsfinstance={this.state.dsfinstance}
                 ercinstance={this.state.ercinstance}

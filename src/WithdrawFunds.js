@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
+import DethSwitch from "../build/contracts/DethSwitch.json";
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
-
-/*
-
-3. approve DethSwitch contract to send on behalf of parent
-    -Get reference to ERC20token contract (has to accept arbitrary token address)
-    - TokenInstance = ERC20Token.at(tokenAddress)
-    - TokenInstance.approve(DethSwithAddress, amountOfTokens)
-*/
 
 class NewContract extends Component {
   constructor(props) {
@@ -26,20 +19,31 @@ class NewContract extends Component {
   }
 
   async withdrawFunds(funds){
+    var currentContract = this.props.parentContracts[0] || undefined;
 
-    return this.props.ercinstance.approve.call(0xdc26e77255b2ff073e0ab96fbc9931356f01fb8c,funds).then((res) => {
+    await this.props.ercinstance.approve.call(currentContract,funds).then((res) => {
+      console.log(`Approved: ${res}`);
+    })
+
+    return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).withdraw.call(this.props.parentAddress,(err,res) => {
+      console.log(err);
       console.log(res);
     })
+
+    // return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).getExpirationTime.call((err,res) => {
+    //   console.log(err);
+    //   console.log(res);
+    // })
 
   }
 
   handleSubmit(e) {
     e.preventDefault();
-
     this.withdrawFunds(20);
   }
 
   handleChange(e) {
+    console.log(this.props.parentContracts);
     this.setState({[e.target.name]: e.target.value});
   }
 
@@ -50,7 +54,7 @@ class NewContract extends Component {
               <h1> Withdraw Funds From a DethSwitch Contract</h1>
               <p>Your Address (detected): {this.props.parentAddress}</p>
               <p>ERC20Token address (detected): {this.props.tokenAddress}</p>
-              <p>Contract : 0xdc26e77255b2ff073e0ab96fbc9931356f01fb8c</p>
+              <p>Contract : {this.props.parentContracts} </p>
 
               <div className='submission-forms'>
                 <form onSubmit={this.handleSubmit}>

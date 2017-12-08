@@ -5,6 +5,7 @@ import TokenMarket from './TokenMarket.js';
 import NewContract from './NewContract.js';
 import Withdraw from './Withdraw.js';
 import DeployedContracts from './DeployedContracts.js';
+import WithdrawFunds from './WithdrawFunds.js';
 
 // Contracts
 
@@ -64,6 +65,10 @@ class App extends Component {
     const anyERC20Token = contract(AnyERC20Token)
     anyERC20Token.setProvider(this.state.web3.currentProvider)
     let instance = await anyERC20Token.deployed();
+    this.setState({ercinstance:instance})
+
+    let tokenAddress = await instance.address;
+    this.setState({tokenAddress})
 
     let totalSupply = await instance.totalSupply.call()
     this.setState({tokenSupply: totalSupply.toNumber()});
@@ -78,8 +83,6 @@ class App extends Component {
     return instance.balanceOf(parentAddress).then((results) => {
       this.setState({parentBalance: results.c[0]});
     })
-
-
 
   }
 
@@ -129,7 +132,6 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <div className='container'>
         <div className="App">
@@ -155,6 +157,15 @@ class App extends Component {
 
               <Withdraw
                 web3={this.state.web3}
+              />
+
+              <WithdrawFunds
+                tokenAddress={this.state.tokenAddress}
+                dsfinstance={this.state.dsfinstance}
+                ercinstance={this.state.ercinstance}
+                parentAddress={this.state.parentAddress}
+                parentContracts={this.state.parentContracts}
+                heirContracts={this.state.heirContracts}
               />
 
         </div>

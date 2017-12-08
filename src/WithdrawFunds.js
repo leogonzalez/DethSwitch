@@ -7,7 +7,6 @@ import './App.css'
 
 /*
 
-so for the user:
 3. approve DethSwitch contract to send on behalf of parent
     -Get reference to ERC20token contract (has to accept arbitrary token address)
     - TokenInstance = ERC20Token.at(tokenAddress)
@@ -19,25 +18,25 @@ class NewContract extends Component {
     super(props)
 
     this.state = {
-      heirAddress: undefined,
-      heartBeatTimer: undefined,
+      contract: undefined
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  createNewDethSwitch(){
-    return this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress}).then((res) => {
-      console.log(res);
-    });
-  }
+  async withdrawFunds(funds){
 
+    return this.props.ercinstance.approve.call(0xdc26e77255b2ff073e0ab96fbc9931356f01fb8c,funds).then((res) => {
+      console.log(res);
+    })
+
+  }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.createNewDethSwitch();
 
+    this.withdrawFunds(20);
   }
 
   handleChange(e) {
@@ -48,19 +47,16 @@ class NewContract extends Component {
     return (
         <div className="NewContract">
           <div className="container">
-              <h1> Create a New DethSwitch Contract</h1>
-              <p>Parent Address (detected): {this.props.parentAddress}</p>
-              <p>Heir Address: {this.state.heirAddress}</p>
-              <p>Drop Dead Date: {this.state.heartBeatTimer}</p>
+              <h1> Withdraw Funds From a DethSwitch Contract</h1>
+              <p>Your Address (detected): {this.props.parentAddress}</p>
+              <p>ERC20Token address (detected): {this.props.tokenAddress}</p>
+              <p>Contract : 0xdc26e77255b2ff073e0ab96fbc9931356f01fb8c</p>
+
               <div className='submission-forms'>
                 <form onSubmit={this.handleSubmit}>
+
                   <div className='list-item'>
-                    <input name="heirAddress" placeholder="heir address" type="text" value={this.state.heirAddress} onChange={this.handleChange} />
-                    <input type="submit" value="Submit" />
-                  </div>
-                  <div className='list-item'>
-                    <input name="heartBeatTimer" placeholder="days till expiration" type="text" value={this.state.heartBeatTimer} onChange={this.handleChange} />
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Withdraw" />
                   </div>
                 </form>
               </div>

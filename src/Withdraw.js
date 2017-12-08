@@ -12,11 +12,12 @@ class Withdraw extends Component {
     super(props)
 
     this.state = {
-      web3: undefined,
+      web3: this.props.web3,
       erc20instance: undefined,
       fromAddress: undefined,
       toAddress: undefined,
       sendValue: undefined,
+      allowance:undefined
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -31,9 +32,10 @@ class Withdraw extends Component {
         web3: results.web3
       })
       this.instantiateContract()
+
     })
-    .catch(() => {
-      console.log('Error finding web3.')
+    .catch((e) => {
+      console.log(e)
     })
   }
 
@@ -52,18 +54,22 @@ class Withdraw extends Component {
         anyERC20TokenInstance = instance
         //calls the totalSupply function from StandardToken contract
         this.setState({erc20instance:anyERC20TokenInstance})
+        this.setState({fromAddress:accounts[0]})
+
+        // enable listening to events on this contract
+
       })
     })
+
+
   }
 
   sendTokens(){
-    // var currentInstance = this.state.erc20instance
-    //
-    // currentInstance.transfer(this.state.toAddress,this.state.sendValue);
-    // return currentInstance.balanceOf.call(this.state.toAddress).then((result) => {
-    //   console.log(result.c[0]);
-    // });
+
+    var currentInstance = this.state.erc20instance;
+    return currentInstance.transfer(this.state.toAddress,this.state.sendValue,{from:this.state.fromAddress});
   }
+
 
   handleSubmit(e) {
     e.preventDefault();
@@ -75,6 +81,8 @@ class Withdraw extends Component {
   }
 
   render() {
+
+
     return (
       <div className="Withdraw">
         <div className='container'>
@@ -82,10 +90,15 @@ class Withdraw extends Component {
           <div className='submission-forms'>
             <form onSubmit={this.handleSubmit}>
               <div className='list-item'>
-                <input name="toAddress" placeholder="To Address" type="text" value={this.state.toAddress} onChange={this.handleChange} />
-                <input name="sendValue" placeholder="Value to send" type="text" value={this.state.sendValue} onChange={this.handleChange} />
-                <input type="submit" value="Send" />
+                <p> Parent's Address (detected): {this.state.fromAddress}</p>
               </div>
+              <div className='list-item'>
+                <input name="toAddress" placeholder="To Address" type="text" value={this.state.toAddress} onChange={this.handleChange} />
+              </div>
+              <div className='list-item'>
+                <input name="sendValue" placeholder="Value to send" type="text" value={this.state.sendValue} onChange={this.handleChange} />
+              </div>
+                <input type="submit" value="Send" />
             </form>
           </div>
         </div>

@@ -6,7 +6,7 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-class NewContract extends Component {
+class WithdrawFunds extends Component {
   constructor(props) {
     super(props)
 
@@ -14,26 +14,29 @@ class NewContract extends Component {
       contract: undefined
     }
 
-    this.handleChange = this.handleChange.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   async withdrawFunds(funds){
-    var currentContract = this.props.parentContracts[0] || undefined;
+    var currentContract = 0x27bed41c595fae5d0b34381cb3a2300da85b93f5;
+    // console.log(currentContract);
 
-    await this.props.ercinstance.approve.call(currentContract,funds).then((res) => {
-      console.log(`Approved: ${res}`);
-    })
+    //getting zero
+    // await this.props.ercinstance.allowance.call(this.props.parentAddress,currentContract).then((res) => {
+    //   console.log(`Approved Value: ${res}`);
+    // })
 
-    return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).withdraw.call(this.props.parentAddress,(err,res) => {
-      console.log(err);
-      console.log(res);
-    })
-
-    // return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).getExpirationTime.call((err,res) => {
+    // return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).withdraw.call(this.props.tokenAddress,(err,res) => {
     //   console.log(err);
     //   console.log(res);
     // })
+
+    return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).getAllowance(this.props.tokenAddress,{from: this.props.parentAddress},(err,res) => {
+      console.log(err);
+      console.log(res);
+      console.log(this.props.tokenAddress);
+    });
 
   }
 
@@ -42,10 +45,7 @@ class NewContract extends Component {
     this.withdrawFunds(20);
   }
 
-  handleChange(e) {
-    console.log(this.props.parentContracts);
-    this.setState({[e.target.name]: e.target.value});
-  }
+
 
   render() {
     return (
@@ -54,7 +54,7 @@ class NewContract extends Component {
               <h1> Withdraw Funds From a DethSwitch Contract</h1>
               <p>Your Address (detected): {this.props.parentAddress}</p>
               <p>ERC20Token address (detected): {this.props.tokenAddress}</p>
-              <p>Contract : {this.props.parentContracts} </p>
+              <p>Contract : {JSON.stringify(this.props.parentContracts)} </p>
 
               <div className='submission-forms'>
                 <form onSubmit={this.handleSubmit}>
@@ -70,4 +70,4 @@ class NewContract extends Component {
   }
 }
 
-export default NewContract
+export default WithdrawFunds

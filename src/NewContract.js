@@ -27,16 +27,23 @@ class NewContract extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  createNewDethSwitch(){
-    return this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress}).then((res) => {
-      console.log(res);
-    });
+  async createNewDethSwitch(){
+    await this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress});
+
   }
 
+  async approveWithdraw(){
+    this.contract = 0x27bed41c595fae5d0b34381cb3a2300da85b93f5;
+    this.funds = 20;
+    await this.props.ercinstance.approve.call(this.contract,this.funds).then((res) => {
+      console.log(res);
+    })
+  }
 
   handleSubmit(e) {
     e.preventDefault();
     this.createNewDethSwitch();
+    // this.approveWithdraw();
 
   }
 

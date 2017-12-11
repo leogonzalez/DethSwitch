@@ -18,20 +18,15 @@ class WithdrawFunds extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  async withdrawFunds(funds){
-
-
-    // return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).withdraw.call(this.props.tokenAddress,(err,res) => {
-    //   console.log(err);
-    //   console.log(res);
-    // })
-
-    // return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).getAllowance(this.props.tokenAddress,{from: this.props.parentAddress},(err,res) => {
-    //   console.log(err);
-    //   console.log(res);
-    //   console.log(this.props.tokenAddress);
-    // });
-
+  async withdrawFunds(){
+    // console.log(this.props.web3.eth);
+    // console.log(this.state.contract);
+    // console.log(this.props.tokenAddress);
+    // console.log(this.props.parentAddress);
+    return this.props.web3.eth.contract(DethSwitch.abi).at(this.state.contract).withdraw(this.props.tokenAddress,{from: this.props.parentAddress},(err,res) => {
+      console.log(err);
+      console.log(res);
+    })
   }
 
   handleSubmit(e) {
@@ -43,8 +38,9 @@ class WithdrawFunds extends Component {
     // parent address here is the heir to the contracts
     var add = '0x4B44E1e33F59738e99cA747E2Fb727F7CB63df4F';
     await this.props.ercinstance.allowance(add,cont,{from: add}).then((res) => {
-      console.log(`Approved Value:`);
-      console.log(res.c[0]);
+      // console.log(`Approved Value:`);
+      // console.log(res.c[0]);
+      this.setState({allowedFunds: res.c[0]});
     })
 
   }
@@ -52,7 +48,7 @@ class WithdrawFunds extends Component {
   async pickContract(e){
     // e.preventDefault();
     await this.setState({contract: e})
-    this.getAllowance(this.state.contract);
+    await this.getAllowance(this.state.contract);
     ;
   }
 
@@ -72,12 +68,11 @@ class WithdrawFunds extends Component {
                 <div>
                   <h3> Your Contract Information </h3>
                   <p> Contract Address: {this.state.contract}</p>
-                  <p> Allowance: </p>
-                  <p> Expiration Date: </p>
+                  <p> Allowance: {this.state.allowedFunds}</p>
                 </div>
                 : undefined}
               <div className='submission-forms'>
-                <button>Withdraw</button>
+                <button onClick={this.withdrawFunds.bind(this)}>Withdraw</button>
               </div>
         </div>
       </div>

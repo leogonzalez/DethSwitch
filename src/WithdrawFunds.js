@@ -11,7 +11,7 @@ class WithdrawFunds extends Component {
     super(props)
 
     this.state = {
-      contract: [1,2]
+      contract: undefined
     }
 
     // this.handleChange = this.handleChange.bind(this)
@@ -19,10 +19,7 @@ class WithdrawFunds extends Component {
   }
 
   async withdrawFunds(funds){
-    var currentContract = 0x27bed41c595fae5d0b34381cb3a2300da85b93f5;
-    // console.log(currentContract);
 
-    //getting zero
     // await this.props.ercinstance.allowance.call(this.props.parentAddress,currentContract).then((res) => {
     //   console.log(`Approved Value: ${res}`);
     // })
@@ -32,11 +29,11 @@ class WithdrawFunds extends Component {
     //   console.log(res);
     // })
 
-    return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).getAllowance(this.props.tokenAddress,{from: this.props.parentAddress},(err,res) => {
-      console.log(err);
-      console.log(res);
-      console.log(this.props.tokenAddress);
-    });
+    // return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).getAllowance(this.props.tokenAddress,{from: this.props.parentAddress},(err,res) => {
+    //   console.log(err);
+    //   console.log(res);
+    //   console.log(this.props.tokenAddress);
+    // });
 
   }
 
@@ -47,7 +44,7 @@ class WithdrawFunds extends Component {
 
   pickContract(e){
     // e.preventDefault();
-    console.log(this.props.heirContracts[e]);
+    this.setState({contract: e});
   }
 
   render() {
@@ -60,9 +57,16 @@ class WithdrawFunds extends Component {
               <h3> Pick your contract to withdraw funds </h3>
               { this.props.heirContracts ?
                 this.props.heirContracts.map((item, index) => (
-                   <button onClick={(e) => this.pickContract(index)} key={index}>Heir Contract#{index}: {item}</button>
+                   <button onClick={(e) => this.pickContract(item)} key={index}>Heir Contract#{index}: {item}</button>
                 )) : undefined}
-
+              {this.state.contract ?
+                <div>
+                  <h3> Your Contract Information </h3>
+                  <p> Contract Address: {this.state.contract}</p>
+                  <p> Allowance: </p>
+                  <p> Expiration Date: </p>
+                </div>
+                : undefined}
               <div className='submission-forms'>
                 <button>Withdraw</button>
               </div>

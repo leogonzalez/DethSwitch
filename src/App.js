@@ -6,6 +6,7 @@ import NewContract from './NewContract.js';
 import Withdraw from './Withdraw.js';
 import DeployedContracts from './DeployedContracts.js';
 import WithdrawFunds from './WithdrawFunds.js';
+import ApproveFunds from './ApproveFunds.js';
 
 // Contracts
 
@@ -182,6 +183,16 @@ class App extends Component {
                 parentContracts={this.state.parentContracts}
                 heirContracts={this.state.heirContracts}
                 updateContracts={this.updateContracts}
+              />
+
+              <ApproveFunds
+                web3={this.state.web3}
+                tokenAddress={this.state.tokenAddress}
+                dsfinstance={this.state.dsfinstance}
+                ercinstance={this.state.ercinstance}
+                parentAddress={this.state.parentAddress}
+                parentContracts={this.state.parentContracts}
+                heirContracts={this.state.heirContracts}
               />
 
               <WithdrawFunds

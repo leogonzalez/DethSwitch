@@ -51,7 +51,7 @@ class WithdrawFunds extends Component {
     return (
         <div className="NewContract">
           <div className="container">
-              <h1> Withdraw Funds From a DethSwitch Contract</h1>
+              <h1> As an Heir, Withdraw Funds From a DethSwitch Contract</h1>
               <p>Your Address (detected): {this.props.parentAddress}</p>
               <p>ERC20Token address (detected): {this.props.tokenAddress}</p>
               <h3> Pick your contract to withdraw funds </h3>

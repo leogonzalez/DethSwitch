@@ -28,23 +28,22 @@ class NewContract extends Component {
   }
 
   async createNewDethSwitch(){
-    await this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress});
-
-  }
-
-  async approveWithdraw(){
-    this.contract = 0x27bed41c595fae5d0b34381cb3a2300da85b93f5;
-    this.funds = 20;
-    await this.props.ercinstance.approve.call(this.contract,this.funds).then((res) => {
+    await this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress}).then((res) => {
       console.log(res);
-    })
+    });
   }
+
+  // async approveWithdraw(){
+  //   this.contract = 0x27bed41c595fae5d0b34381cb3a2300da85b93f5;
+  //   this.funds = 20;
+  //   await this.props.ercinstance.approve.call(this.contract,this.funds).then((res) => {
+  //     console.log(res);
+  //   })
+  // }
 
   handleSubmit(e) {
     e.preventDefault();
     this.createNewDethSwitch();
-    // this.approveWithdraw();
-
   }
 
   handleChange(e) {
@@ -63,13 +62,17 @@ class NewContract extends Component {
                 <form onSubmit={this.handleSubmit}>
                   <div className='list-item'>
                     <input name="heirAddress" placeholder="heir address" type="text" value={this.state.heirAddress} onChange={this.handleChange} />
-                    <input type="submit" value="Submit" />
                   </div>
                   <div className='list-item'>
                     <input name="heartBeatTimer" placeholder="days till expiration" type="text" value={this.state.heartBeatTimer} onChange={this.handleChange} />
-                    <input type="submit" value="Submit" />
                   </div>
+                  <input type="submit" value="Submit" />
                 </form>
+                <div>
+                  <h3> Contract Information </h3>
+                  <p>Heir: {this.state.heirAddress} </p>
+                  <p>Expiration: {this.state.heartBeatTimer} </p>
+                </div>
               </div>
         </div>
       </div>

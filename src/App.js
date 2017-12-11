@@ -3,13 +3,13 @@ import React, { Component } from 'react'
 import getWeb3 from './utils/getWeb3'
 import TokenMarket from './TokenMarket.js';
 import NewContract from './NewContract.js';
-import Withdraw from './Withdraw.js';
 import DeployedContracts from './DeployedContracts.js';
 import WithdrawFunds from './WithdrawFunds.js';
+import ApproveFunds from './ApproveFunds.js';
 
 // Contracts
 
-import DSF from '../build/contracts/DethSwitchFactory.json'
+import DSF from '../build/contracts/DethSwitchFactory.json';
 import AnyERC20Token from '../build/contracts/AnyERC20Token.json';
 
 import './css/oswald.css'
@@ -17,22 +17,26 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-/*
-A FEW TO-DOS ON THE FRONT END:
-1. Lift up getWeb3 state so we don't have to fetch it for every component that uses it
-2. Lift up the Account Holders state so we make sure every component gets updated when tokens are transfered
-3.
-
- */
-
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      testeinstance: undefined
     }
+    this.getHeirContracts = this.getHeirContracts.bind(this);
+    this.getParentContracts = this.getParentContracts.bind(this);
+    this.updateContracts = this.updateContracts.bind(this);
+    this.mapContractToParents = this.mapContractToParents.bind(this);
   }
 
+  async updateContracts(){
+    this.setState({parentContracts:[]})
+    this.setState({heirContracts:[]})
+    this.getParentAccount().then(async () => {
+      await this.getHeirContracts();
+      await this.getParentContracts();
+    });
+  }
 
   async instantiateDSFContract() {
     const contract = require('truffle-contract')
@@ -42,21 +46,8 @@ class App extends Component {
     let instance = await dethSwitchFactory.deployed();
     this.setState({dsfinstance:instance})
 
-    let heirContracts = await instance.getNumberOfHeirContracts.call();
-    let heirContractsArray = [];
-    for (var i = 0; i < heirContracts; i++) {
-      var ctc = await instance.getHeirContracts.call(i);
-      heirContractsArray.push(ctc);
-      this.setState({heirContracts:heirContractsArray})
-    }
-
-    let numberOfContracts = await instance.getNumberOfOwnedContracts.call();
-    let ownContractsArray = [];
-    for (var i = 0; i < numberOfContracts; i++) {
-      var ctc = await instance.getOwnedContracts.call(i);
-      ownContractsArray.push(ctc);
-      this.setState({parentContracts:ownContractsArray})
-    }
+    this.getHeirContracts();
+    this.getParentContracts();
 
   }
 
@@ -86,8 +77,51 @@ class App extends Component {
 
   }
 
+  async getParentContracts(){
 
-  componentWillMount() {
+    await this.getParentAccount();
+    let instance = this.state.dsfinstance;
+    let numberOfContracts = await instance.getNumberOfOwnedContracts.call();
+    let ownContractsArray = [];
+    for (var i = 0; i < numberOfContracts; i++) {
+      var ctc = await instance.getOwnedContracts.call(i,{from:this.state.parentAddress});
+      ownContractsArray.push(ctc);
+      this.setState({parentContracts:ownContractsArray})
+    }
+
+    return this.state.parentContracts
+  }
+
+  async getHeirContracts(){
+    await this.getParentAccount();
+    let instance = this.state.dsfinstance;
+    let heirContracts = await instance.getNumberOfHeirContracts.call({from:this.state.parentAddress});
+    let heirContractsArray = [];
+    for (var i = 0; i < heirContracts; i++) {
+      var ctc = await instance.getHeirContracts.call(i,{from:this.state.parentAddress});
+      heirContractsArray.push(ctc);
+      this.setState({heirContracts:heirContractsArray})
+    }
+
+  }
+
+ async getParentAccount(){
+   this.state.web3.eth.getAccounts((err,res) => {
+     this.setState({
+       parentAddress: res[0]
+     })
+     return res[0];
+   });
+ }
+
+ async mapContractToParents(parent,contract){
+   var objParent = this.state.mapParent || {};
+   objParent[contract] = parent;
+   this.setState({mapParent: objParent});
+   console.log(this.state.mapParent);
+ }
+
+ componentWillMount() {
 
 
     getWeb3
@@ -132,6 +166,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.mapParent);
     return (
       <div className='container'>
         <div className="App">
@@ -148,24 +183,36 @@ class App extends Component {
                 web3={this.state.web3}
                 dsfinstance={this.state.dsfinstance}
                 parentAddress={this.state.parentAddress}
+                ercinstance={this.state.ercinstance}
+                parentContracts={this.state.parentContracts}
               />
 
               <DeployedContracts
                 parentContracts={this.state.parentContracts}
                 heirContracts={this.state.heirContracts}
+                updateContracts={this.updateContracts}
               />
 
-              <Withdraw
+              <ApproveFunds
                 web3={this.state.web3}
-              />
-
-              <WithdrawFunds
                 tokenAddress={this.state.tokenAddress}
                 dsfinstance={this.state.dsfinstance}
                 ercinstance={this.state.ercinstance}
                 parentAddress={this.state.parentAddress}
                 parentContracts={this.state.parentContracts}
                 heirContracts={this.state.heirContracts}
+                mapParent={this.mapContractToParents}
+              />
+
+              <WithdrawFunds
+                web3={this.state.web3}
+                tokenAddress={this.state.tokenAddress}
+                dsfinstance={this.state.dsfinstance}
+                ercinstance={this.state.ercinstance}
+                parentAddress={this.state.parentAddress}
+                parentContracts={this.state.parentContracts}
+                heirContracts={this.state.heirContracts}
+                mapParent={this.state.mapParent}
               />
 
         </div>
@@ -174,4 +221,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default App;

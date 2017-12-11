@@ -1444,7 +1444,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 885,
+                                          "referencedDeclaration": 901,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -1594,7 +1594,7 @@
                                               "overloadedDeclarations": [
                                                 null
                                               ],
-                                              "referencedDeclaration": 885,
+                                              "referencedDeclaration": 901,
                                               "type": "msg",
                                               "value": "msg"
                                             },
@@ -1778,7 +1778,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 885,
+                                          "referencedDeclaration": 901,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -2241,7 +2241,7 @@
                                               "overloadedDeclarations": [
                                                 null
                                               ],
-                                              "referencedDeclaration": 885,
+                                              "referencedDeclaration": 901,
                                               "type": "msg",
                                               "value": "msg"
                                             },
@@ -2585,7 +2585,7 @@
                                               "overloadedDeclarations": [
                                                 null
                                               ],
-                                              "referencedDeclaration": 885,
+                                              "referencedDeclaration": 901,
                                               "type": "msg",
                                               "value": "msg"
                                             },
@@ -3126,7 +3126,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 885,
+                                          "referencedDeclaration": 901,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -3249,7 +3249,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 885,
+                                  "referencedDeclaration": 901,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -3991,7 +3991,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 885,
+                                      "referencedDeclaration": 901,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -4463,7 +4463,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 885,
+                                          "referencedDeclaration": 901,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -4702,7 +4702,7 @@
                                               "overloadedDeclarations": [
                                                 null
                                               ],
-                                              "referencedDeclaration": 893,
+                                              "referencedDeclaration": 909,
                                               "type": "function () pure returns (bytes32)",
                                               "value": "sha3"
                                             },
@@ -4760,7 +4760,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 885,
+                                      "referencedDeclaration": 901,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -4793,7 +4793,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 900,
+                                  "referencedDeclaration": 916,
                                   "type": "contract AnyERC20Token",
                                   "value": "this"
                                 },
@@ -4895,12 +4895,22 @@
     "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
   },
   "networks": {
-    "1512709942630": {
+    "5777": {
       "events": {},
       "links": {},
-      "address": "0x7fc41343ace4e742c379f2540b14d28de516cc34"
+      "address": "0x4941ef95ef14a9101687b2bf505cb6fe5c5121d8"
+    },
+    "1512877264606": {
+      "events": {},
+      "links": {},
+      "address": "0xd8ec401f1a60c0e5fd055e9aa79b5e6d2991ccc8"
+    },
+    "1512918481362": {
+      "events": {},
+      "links": {},
+      "address": "0x87e954d54aba46c5b36414648212aa576691c2d6"
     }
   },
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-08T05:13:06.984Z"
+  "updatedAt": "2017-12-10T15:08:26.712Z"
 }

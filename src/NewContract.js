@@ -27,17 +27,15 @@ class NewContract extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  createNewDethSwitch(){
-    return this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress}).then((res) => {
+  async createNewDethSwitch(){
+    await this.props.dsfinstance.newDethSwitch(this.state.heirAddress,'placeholder', this.state.heartBeatTimer, {from: this.props.parentAddress}).then((res) => {
       console.log(res);
     });
   }
 
-
   handleSubmit(e) {
     e.preventDefault();
     this.createNewDethSwitch();
-
   }
 
   handleChange(e) {
@@ -56,13 +54,17 @@ class NewContract extends Component {
                 <form onSubmit={this.handleSubmit}>
                   <div className='list-item'>
                     <input name="heirAddress" placeholder="heir address" type="text" value={this.state.heirAddress} onChange={this.handleChange} />
-                    <input type="submit" value="Submit" />
                   </div>
                   <div className='list-item'>
                     <input name="heartBeatTimer" placeholder="days till expiration" type="text" value={this.state.heartBeatTimer} onChange={this.handleChange} />
-                    <input type="submit" value="Submit" />
                   </div>
+                  <input type="submit" value="Submit" />
                 </form>
+                <div>
+                  <h3> Contract Information </h3>
+                  <p>Heir: {this.state.heirAddress} </p>
+                  <p>Expiration: {this.state.heartBeatTimer} </p>
+                </div>
               </div>
         </div>
       </div>

@@ -1,19 +1,12 @@
 import React, { Component } from 'react'
+import DethSwitch from "../build/contracts/DethSwitch.json";
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-/*
-
-3. approve DethSwitch contract to send on behalf of parent
-    -Get reference to ERC20token contract (has to accept arbitrary token address)
-    - TokenInstance = ERC20Token.at(tokenAddress)
-    - TokenInstance.approve(DethSwithAddress, amountOfTokens)
-*/
-
-class NewContract extends Component {
+class WithdrawFunds extends Component {
   constructor(props) {
     super(props)
 
@@ -21,44 +14,63 @@ class NewContract extends Component {
       contract: undefined
     }
 
-    this.handleChange = this.handleChange.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  async withdrawFunds(funds){
-
-    return this.props.ercinstance.approve.call(0xdc26e77255b2ff073e0ab96fbc9931356f01fb8c,funds).then((res) => {
+  async withdrawFunds(){
+    return this.props.web3.eth.contract(DethSwitch.abi).at(this.state.contract).withdraw(this.props.tokenAddress,{from: this.props.parentAddress},(err,res) => {
+      console.log(err);
       console.log(res);
     })
-
   }
 
   handleSubmit(e) {
     e.preventDefault();
-
     this.withdrawFunds(20);
   }
 
-  handleChange(e) {
-    this.setState({[e.target.name]: e.target.value});
+  async getAllowance(cont){
+    // parent address here is the heir to the contracts
+    var add = await this.props.mapParent[cont];
+    console.log(this.props.mapParent[cont]);
+    await this.props.ercinstance.allowance(add,cont,{from: add}).then((res) => {
+      // console.log(`Approved Value:`);
+      // console.log(res.c[0]);
+      this.setState({allowedFunds: res.c[0]});
+    })
+
+  }
+
+  async pickContract(e){
+    // e.preventDefault();
+    await this.setState({contract: e})
+    await this.getAllowance(this.state.contract);
+    ;
   }
 
   render() {
+    console.log(this.props.mapParent);
     return (
         <div className="NewContract">
           <div className="container">
-              <h1> Withdraw Funds From a DethSwitch Contract</h1>
+              <h1> As an Heir, Withdraw Funds From a DethSwitch Contract</h1>
               <p>Your Address (detected): {this.props.parentAddress}</p>
               <p>ERC20Token address (detected): {this.props.tokenAddress}</p>
-              <p>Contract : 0xdc26e77255b2ff073e0ab96fbc9931356f01fb8c</p>
-
+              <h3> Pick your contract to withdraw funds </h3>
+              { this.props.heirContracts ?
+                this.props.heirContracts.map((item, index) => (
+                   <button onClick={(e) => this.pickContract(item)} key={index}>Heir Contract#{index}: {item}</button>
+                )) : undefined}
+              {this.state.contract ?
+                <div>
+                  <h3> Your Contract Information </h3>
+                  <p> Contract Address: {this.state.contract}</p>
+                  <p> Allowance: {this.state.allowedFunds}</p>
+                </div>
+                : undefined}
               <div className='submission-forms'>
-                <form onSubmit={this.handleSubmit}>
-
-                  <div className='list-item'>
-                    <input type="submit" value="Withdraw" />
-                  </div>
-                </form>
+                <button onClick={this.withdrawFunds.bind(this)}>Withdraw</button>
               </div>
         </div>
       </div>
@@ -66,4 +78,4 @@ class NewContract extends Component {
   }
 }
 
-export default NewContract
+export default WithdrawFunds

@@ -29,6 +29,8 @@ class App extends Component {
   }
 
   async updateContracts(){
+    this.setState({parentContracts:[]})
+    this.setState({heirContracts:[]})
     this.getParentAccount().then(async () => {
       await this.getHeirContracts();
       await this.getParentContracts();
@@ -182,10 +184,6 @@ class App extends Component {
                 updateContracts={this.updateContracts}
               />
 
-              <Withdraw
-                web3={this.state.web3}
-              />
-
               <WithdrawFunds
                 web3={this.state.web3}
                 tokenAddress={this.state.tokenAddress}
@@ -202,4 +200,11 @@ class App extends Component {
   }
 }
 
-export default App
+export default App;
+/*
+
+<Withdraw
+  web3={this.state.web3}
+/>
+
+*/

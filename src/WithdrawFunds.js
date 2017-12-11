@@ -11,7 +11,7 @@ class WithdrawFunds extends Component {
     super(props)
 
     this.state = {
-      contract: undefined
+      contract: [1,2]
     }
 
     // this.handleChange = this.handleChange.bind(this)
@@ -45,7 +45,10 @@ class WithdrawFunds extends Component {
     this.withdrawFunds(20);
   }
 
-
+  pickContract(e){
+    // e.preventDefault();
+    console.log(this.props.heirContracts[e]);
+  }
 
   render() {
     return (
@@ -54,15 +57,14 @@ class WithdrawFunds extends Component {
               <h1> Withdraw Funds From a DethSwitch Contract</h1>
               <p>Your Address (detected): {this.props.parentAddress}</p>
               <p>ERC20Token address (detected): {this.props.tokenAddress}</p>
-              <p>Contract : {JSON.stringify(this.props.parentContracts)} </p>
+              <h3> Pick your contract to withdraw funds </h3>
+              { this.props.heirContracts ?
+                this.props.heirContracts.map((item, index) => (
+                   <button onClick={(e) => this.pickContract(index)} key={index}>Heir Contract#{index}: {item}</button>
+                )) : undefined}
 
               <div className='submission-forms'>
-                <form onSubmit={this.handleSubmit}>
-
-                  <div className='list-item'>
-                    <input type="submit" value="Withdraw" />
-                  </div>
-                </form>
+                <button>Withdraw</button>
               </div>
         </div>
       </div>

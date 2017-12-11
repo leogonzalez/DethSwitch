@@ -20,9 +20,6 @@ class WithdrawFunds extends Component {
 
   async withdrawFunds(funds){
 
-    // await this.props.ercinstance.allowance.call(this.props.parentAddress,currentContract).then((res) => {
-    //   console.log(`Approved Value: ${res}`);
-    // })
 
     // return this.props.web3.eth.contract(DethSwitch.abi).at(currentContract).withdraw.call(this.props.tokenAddress,(err,res) => {
     //   console.log(err);
@@ -42,9 +39,21 @@ class WithdrawFunds extends Component {
     this.withdrawFunds(20);
   }
 
-  pickContract(e){
+  async getAllowance(cont){
+    // parent address here is the heir to the contracts
+    var add = '0x4B44E1e33F59738e99cA747E2Fb727F7CB63df4F';
+    await this.props.ercinstance.allowance(add,cont,{from: add}).then((res) => {
+      console.log(`Approved Value:`);
+      console.log(res.c[0]);
+    })
+
+  }
+
+  async pickContract(e){
     // e.preventDefault();
-    this.setState({contract: e});
+    await this.setState({contract: e})
+    this.getAllowance(this.state.contract);
+    ;
   }
 
   render() {

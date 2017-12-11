@@ -15,7 +15,7 @@ class TokenMarket extends Component {
     return (
       <div className="TokenMarket">
         <div className="container">
-          <h1> Token Market </h1>
+          <h1> Your Tokens </h1>
           <p>Token Name: {this.props.tokenName}</p>
           <p>Token Symbol: {this.props.tokenSymbol}</p>
           <p>Total Supply: {this.props.tokenSupply}</p>

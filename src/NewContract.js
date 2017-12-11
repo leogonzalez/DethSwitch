@@ -33,14 +33,6 @@ class NewContract extends Component {
     });
   }
 
-  // async approveWithdraw(){
-  //   this.contract = 0x27bed41c595fae5d0b34381cb3a2300da85b93f5;
-  //   this.funds = 20;
-  //   await this.props.ercinstance.approve.call(this.contract,this.funds).then((res) => {
-  //     console.log(res);
-  //   })
-  // }
-
   handleSubmit(e) {
     e.preventDefault();
     this.createNewDethSwitch();

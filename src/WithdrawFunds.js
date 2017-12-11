@@ -19,10 +19,6 @@ class WithdrawFunds extends Component {
   }
 
   async withdrawFunds(){
-    // console.log(this.props.web3.eth);
-    // console.log(this.state.contract);
-    // console.log(this.props.tokenAddress);
-    // console.log(this.props.parentAddress);
     return this.props.web3.eth.contract(DethSwitch.abi).at(this.state.contract).withdraw(this.props.tokenAddress,{from: this.props.parentAddress},(err,res) => {
       console.log(err);
       console.log(res);
@@ -36,7 +32,8 @@ class WithdrawFunds extends Component {
 
   async getAllowance(cont){
     // parent address here is the heir to the contracts
-    var add = '0x4B44E1e33F59738e99cA747E2Fb727F7CB63df4F';
+    var add = await this.props.mapParent[cont];
+    console.log(this.props.mapParent[cont]);
     await this.props.ercinstance.allowance(add,cont,{from: add}).then((res) => {
       // console.log(`Approved Value:`);
       // console.log(res.c[0]);
@@ -53,6 +50,7 @@ class WithdrawFunds extends Component {
   }
 
   render() {
+    console.log(this.props.mapParent);
     return (
         <div className="NewContract">
           <div className="container">

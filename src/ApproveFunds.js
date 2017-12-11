@@ -30,6 +30,8 @@ class ApproveFunds extends Component {
       console.log(res);
     })
 
+    await this.props.mapParent(this.props.parentAddress,this.state.contract);
+
   }
 
   handleSubmit(e) {

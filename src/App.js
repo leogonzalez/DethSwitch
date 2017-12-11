@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import getWeb3 from './utils/getWeb3'
 import TokenMarket from './TokenMarket.js';
 import NewContract from './NewContract.js';
-import Withdraw from './Withdraw.js';
 import DeployedContracts from './DeployedContracts.js';
 import WithdrawFunds from './WithdrawFunds.js';
 import ApproveFunds from './ApproveFunds.js';
@@ -27,6 +26,7 @@ class App extends Component {
     this.getHeirContracts = this.getHeirContracts.bind(this);
     this.getParentContracts = this.getParentContracts.bind(this);
     this.updateContracts = this.updateContracts.bind(this);
+    this.mapContractToParents = this.mapContractToParents.bind(this);
   }
 
   async updateContracts(){
@@ -114,6 +114,13 @@ class App extends Component {
    });
  }
 
+ async mapContractToParents(parent,contract){
+   var objParent = this.state.mapParent || {};
+   objParent[contract] = parent;
+   this.setState({mapParent: objParent});
+   console.log(this.state.mapParent);
+ }
+
  componentWillMount() {
 
 
@@ -159,6 +166,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.mapParent);
     return (
       <div className='container'>
         <div className="App">
@@ -193,6 +201,7 @@ class App extends Component {
                 parentAddress={this.state.parentAddress}
                 parentContracts={this.state.parentContracts}
                 heirContracts={this.state.heirContracts}
+                mapParent={this.mapContractToParents}
               />
 
               <WithdrawFunds
@@ -203,6 +212,7 @@ class App extends Component {
                 parentAddress={this.state.parentAddress}
                 parentContracts={this.state.parentContracts}
                 heirContracts={this.state.heirContracts}
+                mapParent={this.state.mapParent}
               />
 
         </div>
@@ -212,10 +222,3 @@ class App extends Component {
 }
 
 export default App;
-/*
-
-<Withdraw
-  web3={this.state.web3}
-/>
-
-*/
